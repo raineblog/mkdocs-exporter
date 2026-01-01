@@ -12,18 +12,6 @@ from mlib_load import *
 
 script_dir = Path(__file__).parent.resolve()
 
-def generate_config():
-    info = load_json('info.json')
-    template = info['project'] | parse_yaml(os.path.join(script_dir, "template.yml")) | parse_yaml('docs/assets/extra.yml')
-    template['extra'] = { 'giscus': info['giscus'] }
-    template['nav'] = get_site_nav()
-    with open('mkdocs.yml', 'w', encoding='utf-8') as file:
-        yaml.dump(template, file, allow_unicode=True, indent=4, sort_keys=False)
-    try:
-        os.system("git rev-parse --short HEAD | xargs -I % sed -i \"s/githash: ''/githash: '%'/g\" mkdocs.yml")
-    except Exception as e:
-        print(f"无法创建 githash.txt: {e}")
-
 def clean_url(baseurl, filepath):
     return baseurl.rstrip('/') + '/' + filepath.replace('.md', '/index.html').replace('index/index.html', 'index.html') + "?export=true"
 
@@ -124,21 +112,28 @@ def process_top_level(info, sub_nav, baseurl):
     })
 
     shutil.copy(os.path.join(script_dir, "template.tex"), 'cache/main.tex')
-    compile_latex('cache/main.tex', 'cache/' + info['filename'])
-    
-    shutil.rmtree('cache/toc.json')
-    shutil.rmtree('cache/main.tex')
+    compile_latex('cache/main.tex', os.path.join('build', info['filename']))
+
+    shutil.rmtree('cache')
+
+def generate_config():
+    info = load_json('info.json')
+    template = info['project'] | parse_yaml(os.path.join(script_dir, "template.yml")) | parse_yaml('docs/assets/extra.yml')
+    template['extra'] = { 'giscus': info['giscus'] }
+    template['nav'] = get_site_nav()
+    with open('mkdocs.yml', 'w', encoding='utf-8') as file:
+        yaml.dump(template, file, allow_unicode=True, indent=4, sort_keys=False)
+    return info
 
 if __name__ == "__main__":
-    generate_config()
-
+    info = generate_config()
     subprocess.run("mkdocs build --strict --clean", shell=True, check=True)
-
-    info = load_json('info.json')
     site_url = server.start_local_server('./site')
+
+    os.makedirs('build', exist_ok=True)
     for item in info['nav']:
         if 'export' in item:
             process_top_level(item['export'], item['children'], site_url)
-    server.stop_local_server()
     
+    server.stop_local_server()
     print("Build Success!")
