@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     latexmk \
     texlive-xetex \
     texlive-lang-chinese \
+    texlive-lang-japanese \
     texlive-latex-extra \
     texlive-plain-generic \
     fonts-noto-cjk \

@@ -30,7 +30,7 @@ def pdf_worker(worker_id: int, task_queue: queue.Queue):
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir, exist_ok=True)
             
-            final_name = os.path.basename(final_path)
+            print(f'... {url}')
     
             page = context.new_page()
             page.goto(url, wait_until="load")
@@ -51,7 +51,7 @@ def pdf_worker(worker_id: int, task_queue: queue.Queue):
             """)
 
             page.pdf(
-                path=final_name,
+                path=final_path,
                 format="A4",
                 margin={"top": "25.5mm", "bottom": "25.5mm", "left": "19mm", "right": "19mm"},
                 print_background=True,
