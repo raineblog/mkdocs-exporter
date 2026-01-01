@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12
 WORKDIR /app
 RUN python -m pip install --upgrade pip --no-cache-dir
 COPY requirements.txt .
@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt && \
     rm -rf /var/lib/apt/lists/*
 COPY exporter/ /app/exporter/
 RUN fc-cache -fv
-RUN latexmk --version && lualatex --version && python --version
+RUN latexmk --version && luahbtex --credits && python --version
