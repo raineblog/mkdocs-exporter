@@ -1,0 +1,10 @@
+.git
+.idea
+.vscode
+__pycache__
+*.pyc
+node_modules
+dist
+test_data
+Dockerfile
+README.md
