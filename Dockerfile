@@ -38,7 +38,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         fonts-noto-cjk fonts-noto-cjk-extra \
         texlive latexmk texlive-latex-base texlive-latex-recommended \
         texlive-latex-extra texlive-luatex texlive-fonts-recommended \
-        texlive-fonts-extra texlive-lang-cjk texlive-lang-chinese \
+        # texlive-fonts-extra \
+        texlive-lang-cjk texlive-lang-chinese \
         texlive-lang-japanese texlive-plain-generic texlive-science && \
     # --- 硬核清理开始 ---
     # 1. 清理 apt 缓存 (archives)
