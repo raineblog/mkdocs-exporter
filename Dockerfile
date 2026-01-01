@@ -38,10 +38,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         -o Dpkg::Options::="--no-triggers" \
         $APT_OPTS \
         git curl perl make ca-certificates fontconfig \
-        fonts-noto-cjk fonts-noto-cjk-extra \
         texlive latexmk texlive-latex-base texlive-latex-recommended \
         texlive-latex-extra texlive-luatex texlive-fonts-recommended \
-        texlive-fonts-extra texlive-lang-cjk texlive-lang-chinese \
+        fonts-noto-cjk texlive-lang-cjk texlive-lang-chinese \
+        # texlive-fonts-extra fonts-noto-cjk-extra \
         texlive-lang-japanese texlive-plain-generic texlive-science && \
     # B. 手动执行触发器 (显式加速 + 逻辑精简)
     # 1. ldconfig (libc-bin 触发器，极快)
