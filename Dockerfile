@@ -18,8 +18,7 @@ RUN apt-get update && \
         texlive-luatex \
         texlive-fonts-recommended \
         # texlive-fonts-extra \
-        latex-cjk-all \
-        texlive-lang-cjk \
+        texlive-lang-chinese \
         texlive-plain-generic \
         texlive-science && \
     rm -rf /var/lib/apt/lists/* && \
