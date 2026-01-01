@@ -56,9 +56,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     # eatmydata fmtutil-sys --byfmt xelatex && \
     # eatmydata fmtutil-sys --byfmt pdflatex && \
     eatmydata fmtutil-sys --byfmt lualatex && \
-    # 注意：如果你确定需要日文纵书支持，取消下面这行的注释 (编译极慢)
-    # eatmydata fmtutil-sys --byfmt uplatex && \
-    # C. 清理
+    # C. [核弹级优化] 阉割 TeXLive 触发器
+    # 将 tex-common 的后续更新脚本清空。
+    # 这样第 5 层安装字体时，apt 试图调用这个脚本更新 TeX，会直接成功并退出，耗时 0ms。
+    truncate -s 0 /var/lib/dpkg/info/tex-common.postinst && \
+    truncate -s 0 /var/lib/dpkg/info/tex-common.triggers && \
+    # D. 清理
     apt-get clean && \
     rm -rf /usr/share/doc/* /usr/share/man/* /usr/share/info/* && \
     rm -rf /var/lib/apt/lists/* /var/log/* /tmp/*
