@@ -4,12 +4,23 @@
 \def\Gin@log#1{} 
 \long\def\PackageInfo#1#2{}
 \def\AM@Message#1{}
+
+% 定义 \subtitle
+\newcommand{\subtitle}[1]{\def\@subtitle{#1}}
+\def\@subtitle{}
+
+% 预定义可能缺失的宏
+\newcommand{\bookabstract}{}
+\newcommand{\bookpublishing}{}
 \makeatother
 
 \hbadness=10000
 \vbadness=10000
 \hfuzz=\maxdimen
 \vfuzz=\maxdimen
+
+\RequirePackage{silence}
+\WarningsOff*
 
 % =================================================================
 
@@ -38,6 +49,7 @@
 % 配色 (深蓝灰，显得高级)
 \definecolor{maincolor}{RGB}{45, 52, 54}
 \definecolor{accentcolor}{RGB}{9, 132, 227}
+\definecolor{darkblue}{RGB}{0, 0, 139}
 
 % 超链接设置
 \hypersetup{
@@ -122,14 +134,14 @@
         
         if data.info then
             if data.info.abstract then
-                tex.print("\\newcommand{\\bookabstract}{")
+                tex.print("\\renewcommand{\\bookabstract}{")
                 for _, para in ipairs(data.info.abstract) do
                     tex.print(para:gsub("#", "\\#") .. "\\par\\vspace{0.5em}")
                 end
                 tex.print("}")
             end
             if data.info.publishing then
-                tex.print("\\newcommand{\\bookpublishing}{" .. data.info.publishing:gsub("#", "\\#") .. "}")
+                tex.print("\\renewcommand{\\bookpublishing}{" .. data.info.publishing:gsub("#", "\\#") .. "}")
             end
         end
         
