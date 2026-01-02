@@ -22,6 +22,12 @@ RUN apt-get update && \
     echo 'path-exclude /usr/share/locale/*' >> /etc/dpkg/dpkg.cfg.d/docker-clean && \
     rm -rf /var/lib/apt/lists/*
 
+RUN uv pip install playwright && \
+    apt-get update && \
+    eatmydata playwright install-deps chromium && \
+    playwright install chromium && \
+    fc-cache -fv && rm -rf /var/lib/apt/lists/*
+
 RUN apt-get update && \
     eatmydata apt-get install -y --no-install-recommends \
         git make fontconfig texlive latexmk texlive-luatex \
@@ -35,12 +41,6 @@ RUN apt-get update && \
     truncate -s 0 /var/lib/dpkg/info/tex-common.postinst && \
     truncate -s 0 /var/lib/dpkg/info/tex-common.triggers && \
     rm -rf /var/lib/apt/lists/*
-
-RUN uv pip install playwright && \
-    apt-get update && \
-    eatmydata playwright install-deps chromium && \
-    playwright install chromium && \
-    fc-cache -fv && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
