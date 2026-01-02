@@ -22,7 +22,7 @@ jobs:
       artifact-metadata: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log into registry ${{ env.REGISTRY }}
@@ -47,6 +47,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
@@ -56,7 +58,7 @@ jobs:
       - uses: quartx-analytics/ghcr-cleaner@v1
         with:
             owner-type: user
-            token: ${{ secrets.GITHUB_TOKEN }}
+            token: ${{ secrets.PAT_TOKEN }}
             package-name: mkdocs-exporter
             delete-untagged: true
             keep-at-most: 5
