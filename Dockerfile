@@ -24,9 +24,9 @@ RUN apt-get update && \
 
 RUN apt-get update && \
     eatmydata apt-get install -y --no-install-recommends \
-        git make fontconfig \
-        texlive latexmk texlive-luatex texlive-latex-base \
-        texlive-latex-extra texlive-latex-recommended texlive-fonts-recommended \
+        git make fontconfig texlive latexmk texlive-luatex \
+        texlive-latex-base texlive-latex-extra texlive-latex-recommended \
+        texlive-pictures texlive-plain-generic texlive-fonts-recommended \
         texlive-lang-cjk texlive-lang-chinese texlive-lang-japanese && \
     ldconfig && \
     eatmydata mktexlsr && \

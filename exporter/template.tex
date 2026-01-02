@@ -44,12 +44,15 @@
 \setlength{\headheight}{8pt}
 \usepackage{etoolbox} % 编程逻辑
 \usepackage{metalogox}
+\usepackage{tikz}
 
 
 % 配色 (深蓝灰，显得高级)
 \definecolor{maincolor}{RGB}{45, 52, 54}
 \definecolor{accentcolor}{RGB}{9, 132, 227}
 \definecolor{darkblue}{RGB}{0, 0, 139}
+\definecolor{gradientstart}{RGB}{176, 192, 222} % 雾霾蓝
+\definecolor{gradientend}{RGB}{164, 176, 190}   % 偏灰
 
 % 超链接设置
 \hypersetup{
@@ -77,10 +80,37 @@
   {\flushright\Huge}
 \titlespacing*{\chapter}{0pt}{50pt}{40pt}
 
-% 目录样式
-\usepackage{titletoc}
-\titlecontents{chapter}[0pt]{\addvspace{1pc}\bfseries}
-{\contentslabel{4em}}{}{\titlerule*[0.3pc]{}\contentspage}
+% 目录样式 (使用 tocloft 以实现更灵活和自动的对齐)
+\usepackage{tocloft}
+\usepackage{calc}
+
+% --- 全局目录设置 ---
+% 设置页码的宽度和右边距，确保所有条目右对齐
+\cftsetpnumwidth{2.5em}
+\cftsetrmarg{3em}
+
+% --- 章节 (chapter) 样式 ---
+% 1. 估算最长章节编号的宽度 (例如 "第二十二章")，并以此为基准对齐
+\newlength{\chapnumwidth}
+\settowidth{\chapnumwidth}{\bfseries 第二十二章}
+\addtolength{\chapnumwidth}{1em} % 增加一点额外的间距
+
+% 2. 设置章节样式
+\renewcommand{\cftchapfont}{\bfseries} % 章节标题加粗
+\renewcommand{\cftchappagefont}{\normalfont} % 页码正常字体
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % 使用点状引导线
+% 3. 设置缩进：左边距为0，编号区域宽度为上面计算的值
+\cftsetindents{chapter}{0em}{\chapnumwidth}
+
+% --- 小节 (section) 样式 ---
+% 1. 估算最长节编号的宽度 (例如 "22.22")
+\newlength{\secnumwidth}
+\settowidth{\secnumwidth}{22.22}
+\addtolength{\secnumwidth}{1em} % 增加一点额外的间距
+
+% 2. 设置节的缩进：左边距为章节编号的宽度，保证节标题对齐
+\cftsetindents{section}{\chapnumwidth}{\secnumwidth}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % 使用点状引导线
 
 % 页眉页脚
 \pagestyle{fancy}
@@ -252,7 +282,10 @@
 \phantomsection
 \addcontentsline{toc}{chapter}{封底}
 \thispagestyle{empty}
-\pagecolor{maincolor} % 封底颜色
+\begin{tikzpicture}[remember picture, overlay]
+    \shade[top color=gradientstart, bottom color=gradientend]
+        (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
 \vspace*{\fill}
 \begin{center}
     \color{white}
