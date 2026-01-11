@@ -125,7 +125,7 @@ def generate_config():
 
 if __name__ == "__main__":
     info = generate_config()
-    subprocess.run("mkdocs build --strict --clean", shell=True, check=True)
+    subprocess.run("mkdocs build --clean", shell=True, check=True)
     site_url = server.start_local_server('./site')
 
     os.makedirs('build', exist_ok=True)

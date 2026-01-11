@@ -64,4 +64,4 @@ jobs:
             package-name: mkdocs-exporter
             delete-untagged: true
             keep-at-most: 5
-            skip-tags: v*,latest,buildcache
+            skip-tags: v*,latest
