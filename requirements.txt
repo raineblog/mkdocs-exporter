@@ -2,4 +2,5 @@ playwright
 pyyaml
 aiohttp
 mkdocs
+mkdocs-minify-plugin
 pymdown-extensions
