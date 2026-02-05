@@ -1,5 +1,8 @@
 import yaml
 import json
+from pathlib import Path
+
+script_dir = Path(__file__).parent.resolve()
 
 def parse_yaml(yaml_path):
     with open(yaml_path, 'r', encoding='utf-8') as file:
@@ -22,6 +25,5 @@ def write_json(file_path, data):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
-def get_site_nav():
-    nav = load_json('info.json')['nav']
+def get_site_nav(nav):
     return [{item['title']: item['children']} for item in nav]

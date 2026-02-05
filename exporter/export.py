@@ -117,8 +117,9 @@ def process_top_level(info, sub_nav, baseurl):
 
 def generate_config():
     info = load_json('info.json')
-    template = info['project'] | parse_yaml(os.path.join(script_dir, "template.yml")) | parse_yaml('docs/assets/extra.yml')
-    template['nav'] = get_site_nav()
+    template_defaults = parse_yaml(script_dir / 'template.yml')
+    nav = { 'nav': get_site_nav(info['nav']) }
+    template = info['project'] | template_defaults | nav
     with open('mkdocs.yml', 'w', encoding='utf-8') as file:
         yaml.dump(template, file, allow_unicode=True, indent=4, sort_keys=False)
     return info

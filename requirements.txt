@@ -1,4 +1,4 @@
-playwright
+selenium
 pyyaml
 aiohttp
 mkdocs
