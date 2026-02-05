@@ -23,15 +23,14 @@ def pdf_worker(worker_id: int, task_queue: queue.Queue):
     logger.debug(f"[Worker-{worker_id}] Started")
 
     chrome_options = Options()
-    # Eager strategy: waits for DOMContentLoaded, not full assets. 
-    # We handle fonts/complete state in our custom script.
-    chrome_options.page_load_strategy = 'eager'
+    # Revert to normal strategy to ensure all assets (CSS/JS) are loaded before printing
+    chrome_options.page_load_strategy = 'normal'
     
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage") # Critical for docker
     chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--disable-software-rasterizer")
+    # chrome_options.add_argument("--disable-software-rasterizer") # Removed for rendering stability
     
     # Low-resource & Performance Tuning
     chrome_options.add_argument("--disable-extensions")
@@ -40,13 +39,13 @@ def pdf_worker(worker_id: int, task_queue: queue.Queue):
     chrome_options.add_argument("--disable-popup-blocking")
     chrome_options.add_argument("--dns-prefetch-disable")
     chrome_options.add_argument("--no-zygote") 
-    chrome_options.add_argument("--disable-background-networking")
+    # chrome_options.add_argument("--disable-background-networking") # Removed for stability
     chrome_options.add_argument("--disable-default-apps")
     chrome_options.add_argument("--disable-sync")
     chrome_options.add_argument("--mute-audio")
     chrome_options.add_argument("--no-first-run")
     chrome_options.add_argument("--safebrowsing-disable-auto-update")
-    chrome_options.add_argument("--disable-features=VizDisplayCompositor")
+    # chrome_options.add_argument("--disable-features=VizDisplayCompositor") # Removed for rendering stability
     chrome_options.add_argument("--disk-cache-size=0") # Disable disk cache
     
     # Suppress logging
