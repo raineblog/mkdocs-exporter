@@ -7,14 +7,13 @@ RUN apk add --no-cache \
     git git-fast-import \
     fontconfig texlive-full && fc-cache -fv
 
-RUN pip install playwright && \
-    playwright install-deps chromium && \
-    playwright install chromium
-
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt && \
+    playwright install-deps chromium && \
+    playwright install chromium
 
 COPY exporter/ /app/exporter/
 COPY --chmod=755 mkdocs-export.sh /usr/local/bin/mkdocs-export
