@@ -1,0 +1,23 @@
+# 🚀 MkDocs Development Makefile (Portable)
+# Copy this file to any repository with mkdocs content to use the local builder image.
+# Image source: https://github.com/raineblog/mkdocs-docker
+
+IMAGE_NAME = mkdocs-exporter-test
+TAG = latest
+PORT = 8000
+
+# Helper to run docker with consistent flags
+DOCKER_RUN = docker run --rm -it \
+	-v "$$(pwd):/app/work" \
+	-w /app/work \
+	-p $(PORT):8000 \
+	$(IMAGE_NAME):$(TAG)
+
+.PHONY: bash export
+
+export:
+	$(DOCKER_RUN) mkdocs-export
+
+bash:
+	@echo "🐚 Opening interactive shell..."
+	$(DOCKER_RUN) bash
